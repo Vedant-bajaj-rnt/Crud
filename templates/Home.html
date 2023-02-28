@@ -61,7 +61,7 @@ function closeForm() {
                   <button onclick="openeditForm(event)">Edit</button>
                 </td>
                 <td>
-                  <button onclick="openDeleteForm(event)" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</button>
+                  <button onclick="openDeleteForm(event)" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</button>
                   
                 </td>
             </tr>
@@ -102,7 +102,7 @@ function closeForm() {
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">Delete Data</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-success btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         Do you really want to delete data
@@ -112,7 +112,7 @@ function closeForm() {
         {%csrf_token%}
         <input type="hidden" name="id" value="id" id="newId_del">
         <button type="submit" class="btn btn-primary">Yes</button>
-        <button type="button" onclick="closeDeleteForm()" class="btn btn-secondary btn cancel" data-bs-dismiss="modal">No</button>
+        <button type="button" onclick="closeDeleteForm()" class="btn btn-info btn cancel" data-bs-dismiss="modal">No</button>
         </form>
       </div>
     </div>
