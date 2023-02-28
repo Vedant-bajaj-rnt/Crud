@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'Home.css' %}">
+    <title>Student_Home</title>
+</head>
+<body>
+  <center>
+  <button class="open-button" onclick="openForm()">Add Data</button>
+  </center>
+
+  <!-- The form -->
+  <div class="form-popup" id="data_entry">
+    <form action="/send" method="post" class="form-container">
+      {%csrf_token%}
+      <h1>Enter Data</h1>
+  
+      <label for="Name"><b>Name</b></label>
+      <input type="text" name="Name" required>
+  
+      <label for="Surname"><b>Surname</b></label>
+      <input type="text" name="Surname" required>
+  
+      <button type="submit" class="btn" >Submit</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+  </div>
+<script>
+function openForm() {
+  document.getElementById("data_entry").style.display = "block";
+  }
+
+function closeForm() {
+  document.getElementById("data_entry").style.display = "none";
+  }
+</script>
+
+
+<h2 id="Heading" align="center">Show All Data</h2>
+    <div id="table" class="text-center" align="center">
+        <table  class="table table-striped">
+            <thead>
+                <th scope="col">SR no.</th>
+                <th scope="col">ID</th>
+                <th scope="col">NAME</th>
+                <th scope="col">SURNAME</th>
+                <th scope="col">UPDATE</th>
+                <th scope="col">DELETE</th>
+            </thead>
+            {%for d in data%}
+            <tr>
+                <td scope="row">{{forloop.counter}}</td>
+                <td id="number">{{d.ID}}</td>
+                <td id="name">{{d.NAME}}</td>
+                <td id="sname">{{d.SURNAME}}</td>
+                <td>
+                  <button onclick="openeditForm(event)">Edit</button>
+                </td>
+                <td>
+                  <button onclick="openDeleteForm(event)" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</button>
+                  
+                </td>
+            </tr>
+            {%endfor%}
+        </table>
+    </div>
+    <div class="form-popup" id="data_edit">
+      <form action="/edit" method="post" class="form-container">
+        {%csrf_token%}
+        <h1>Enter Data</h1>
+        <input type="hidden" name="id" value="id" id="newId">
+    
+        <label for="Name"><b>Name</b></label>
+        <input type="text" name="Name" value="name" id="newName" required>
+    
+        <label for="Surname"><b>Surname</b></label>
+        <input type="text" name="Surname" value="surname" id="newSurName" required>
+    
+        <button type="submit" class="btn" >Submit</button>
+        <button type="button" class="btn cancel" onclick="closeeditForm()">Close</button>
+      </form>
+    </div>
+   <!-- <div class="form-popup" id="data_Delete">
+      <form action="/delete" method="post" class="form-container">
+        {%csrf_token%}
+        <p>Are you sure you want to delete the data</p>
+        <input type="hidden" name="id" value="id" id="newId_del">
+
+        <button type="submit" class="btn" >Yes</button>
+        <button type="button" class="btn cancel" onclick="closeDeleteForm()">No</button>
+      </form>
+    </div>-->
+  
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" id="data_Delete">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Delete Data</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Do you really want to delete data
+      </div>
+      <div class="modal-footer">
+        <form action="/delete" method="post">
+        {%csrf_token%}
+        <input type="hidden" name="id" value="id" id="newId_del">
+        <button type="submit" class="btn btn-primary">Yes</button>
+        <button type="button" onclick="closeDeleteForm()" class="btn btn-secondary btn cancel" data-bs-dismiss="modal">No</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+  function openeditForm(event) {
+    var id = event.target.parentElement.parentElement.children[1].innerHTML;
+    var name = event.target.parentElement.parentElement.children[2].innerHTML;
+    var surname = event.target.parentElement.parentElement.children[3].innerHTML;
+
+    let newId = document.getElementById('newId')
+    newId.value = id;
+    
+    let newName = document.getElementById('newName')
+    newName.value = name;
+
+    let newSurName = document.getElementById('newSurName')
+    newSurName.value = surname;
+
+    document.getElementById("data_edit").style.display = "block";
+    }
+  
+  function closeeditForm() {
+    document.getElementById("data_edit").style.display = "none";
+    }
+  </script>
+  <script>
+  function openDeleteForm(event){
+      var id_del = event.target.parentElement.parentElement.children[1].innerHTML;
+      let newId_del = document.getElementById('newId_del')
+      newId_del.value = id_del;
+    
+      document.getElementById("data_Delete").style.display = "block";
+    }
+  function closeDeleteForm() {
+    document.getElementById("data_Delete").style.display = "none";
+    }
+  </script>
+</body>
+</html>
